@@ -112,4 +112,12 @@ public class Movie {
     public void setPopularity(String popularity) {
         this.popularity = popularity;
     }
+
+    public String getBudgetCategory() {
+        if (budget > 100000 && budget <= 500000)
+            return "Low";
+        else if (budget > 500000 && budget <= 750000)
+            return "Medium";
+        else return "High";
+    }
 }

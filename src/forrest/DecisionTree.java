@@ -5,28 +5,407 @@ import domain.Actor;
 import domain.Genre;
 import domain.Movie;
 import domain.Producer;
+import sun.reflect.generics.tree.Tree;
 
 import java.util.*;
 
 public class DecisionTree {
 
     private Nod radacina;
+    private String prediction;
 
     public DecisionTree(Nod radacina) {
+        this.prediction = null;
         this.radacina = radacina;
     }
 
     public DecisionTree() { }
 
-    private String createTree(List<Movie> movies,Movie movie,String[] atributes)
+    public String createTreeAndPredict(List<Movie> movies,Movie movie,List<String> atributes)
     {
-        double targetEntropy = general_entropy(movies);
-        String bestAtribute = best_infoGain_atribute(movies,movie,atributes);
+        TreeMap<Double, String> list = infoGain_atribute_list(movies,movie,atributes);
+        String bestAtribute = best_infoGain_atribute(list);
+        List<Movie> moviesYes = new ArrayList<>();
+        List<Movie> moviesNo = new ArrayList<>();
+        List<String> restOfAttributes = new ArrayList<>(list.values());
+        List<String> features = new ArrayList<>();
+        for (int i = 1 ; i < restOfAttributes.size() - 1; i++){
+            features.add(restOfAttributes.get(i));
+        }
         radacina.setValue(bestAtribute);
-
-        return null;
+        if (bestAtribute.equals("actors"))
+            prediction = getPredictionForRootActor(movies, movie, moviesYes, moviesNo, features);
+        else if (bestAtribute.equals("budget"))
+            prediction = getPredictionForRootBudget(movies, movie, moviesYes, moviesNo, features);
+        else if (bestAtribute.equals("producers"))
+            prediction = getPredictionForRootProducer(movies, movie, moviesYes, moviesNo, features);
+        else if (bestAtribute.equals("genres"))
+            prediction = getPredictionForRootGenre(movies, movie, moviesYes, moviesNo, features);
+        else if (bestAtribute.equals("director"))
+            prediction = getPredictionForRootDirector(movies, movie, moviesYes, moviesNo, features);
+        return prediction;
 
     }
+
+    public String getPredictionForRootDirector(List<Movie> movies,
+                                               Movie movie,
+                                               List<Movie> moviesYes,
+                                               List<Movie> moviesNo,
+                                               List<String> features) {
+        String prediction = null;
+        for(Movie m : movies){
+            if(m.getDirector_name().equals(movie.getDirector_name())) {
+                moviesYes.add(m);
+            } else {
+                moviesNo.add(m);
+            }
+        }
+        movies = moviesNo;
+        prediction = getMostFrequentPopularity(moviesYes);
+        while (features.size() > 0) {
+            if (movies.size() == 0) return prediction;
+            if (features.iterator().next() == "actors") {
+                for(Movie m : movies) {
+                    if(m.getActors() == movie.getActors()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+                movies = moviesNo;
+            }
+            if (features.iterator().next() == "budget") {
+                for(Movie m : movies) {
+                    if(m.getBudgetCategory() == movie.getBudgetCategory()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+                movies = moviesNo;
+            }
+            if (features.iterator().next() == "producers") {
+                for(Movie m : movies) {
+                    if(m.getProducers() == movie.getProducers()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+                movies = moviesNo;
+            }
+            if (features.iterator().next() == "genres") {
+                for(Movie m: movies) {
+                    if(m.getGenres() == movie.getGenres()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+            }
+        }
+        return prediction;
+    }
+
+
+
+    public String getPredictionForRootGenre(List<Movie> movies,
+                                            Movie movie,
+                                            List<Movie> moviesYes,
+                                            List<Movie> moviesNo,
+                                            List<String> features) {
+        String prediction = null;
+        for(Movie m : movies){
+            if(m.getGenres() == movie.getGenres()) {
+                moviesYes.add(m);
+            } else {
+                moviesNo.add(m);
+            }
+        }
+        movies = moviesNo;
+        prediction = getMostFrequentPopularity(moviesYes);
+        while (features.size() > 0) {
+            if (movies.size() == 0) return prediction;
+            if (features.iterator().next() == "actors") {
+                for(Movie m : movies) {
+                    if(m.getActors() == movie.getActors()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+                movies = moviesNo;
+            }
+            if (features.iterator().next() == "budget") {
+                for(Movie m : movies) {
+                    if(m.getBudgetCategory() == movie.getBudgetCategory()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+                movies = moviesNo;
+            }
+            if (features.iterator().next() == "producers") {
+                for(Movie m : movies) {
+                    if(m.getProducers() == movie.getProducers()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+                movies = moviesNo;
+            }
+            if (features.iterator().next() == "director") {
+                for(Movie m: movies) {
+                    if(m.getDirector_name() == movie.getDirector_name()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+            }
+        }
+        return prediction;
+    }
+
+    public String getPredictionForRootProducer(List<Movie> movies,
+                                               Movie movie,
+                                               List<Movie> moviesYes,
+                                               List<Movie> moviesNo,
+                                               List<String> features) {
+        String prediction = null;
+        for(Movie m : movies){
+            if(m.getProducers() == movie.getProducers()) {
+                moviesYes.add(m);
+            } else {
+                moviesNo.add(m);
+            }
+        }
+        movies = moviesNo;
+        prediction = getMostFrequentPopularity(moviesYes);
+        while (features.size() > 0) {
+            if (movies.size() == 0) return prediction;
+            if (features.iterator().next() == "actors") {
+                for(Movie m : movies) {
+                    if(m.getActors() == movie.getActors()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+                movies = moviesNo;
+            }
+            if (features.iterator().next() == "budget") {
+                for(Movie m : movies) {
+                    if(m.getBudgetCategory() == movie.getBudgetCategory()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+                movies = moviesNo;
+            }
+            if (features.iterator().next() == "genres") {
+                for(Movie m : movies) {
+                    if(m.getGenres() == movie.getGenres()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+                movies = moviesNo;
+            }
+            if (features.iterator().next() == "director") {
+                for(Movie m: movies) {
+                    if(m.getDirector_name() == movie.getDirector_name()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+            }
+        }
+        return prediction;
+    }
+
+    public String getPredictionForRootBudget(List<Movie> movies,
+                                             Movie movie,
+                                             List<Movie> moviesYes,
+                                             List<Movie> moviesNo,
+                                             List<String> features) {
+        String prediction = null;
+        for(Movie m : movies){
+            if(m.getBudgetCategory() == movie.getBudgetCategory()) {
+                moviesYes.add(m);
+            } else {
+                moviesNo.add(m);
+            }
+        }
+        movies = moviesNo;
+        prediction = getMostFrequentPopularity(moviesYes);
+        while (features.size() > 0) {
+            if (movies.size() == 0) return prediction;
+            if (features.iterator().next() == "actors") {
+                for(Movie m : movies) {
+                    if(m.getActors() == movie.getActors()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+                movies = moviesNo;
+            }
+            if (features.iterator().next() == "producers") {
+                for(Movie m : movies) {
+                    if(m.getProducers() == movie.getProducers()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+                movies = moviesNo;
+            }
+            if (features.iterator().next() == "genres") {
+                for(Movie m : movies) {
+                    if(m.getGenres() == movie.getGenres()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+                movies = moviesNo;
+            }
+            if (features.iterator().next() == "director") {
+                for(Movie m: movies) {
+                    if(m.getDirector_name() == movie.getDirector_name()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+            }
+        }
+        return prediction;
+    }
+
+    public String getPredictionForRootActor(List<Movie> movies,
+                                            Movie movie,
+                                            List<Movie> moviesYes,
+                                            List<Movie> moviesNo,
+                                            List<String> features) {
+        String prediction = null;
+        for(Movie m : movies){
+            if(m.getActors() == movie.getActors()) {
+                moviesYes.add(m);
+            } else {
+                moviesNo.add(m);
+            }
+        }
+        movies = moviesNo;
+        prediction = getMostFrequentPopularity(moviesYes);
+        while (features.size() > 0) {
+            if (movies.size() == 0) return prediction;
+            if (features.iterator().next() == "budget") {
+                for(Movie m : movies) {
+                    if(m.getBudgetCategory() == movie.getBudgetCategory()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+                movies = moviesNo;
+            }
+            if (features.iterator().next() == "producers") {
+                for(Movie m : movies) {
+                    if(m.getProducers() == movie.getProducers()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+                movies = moviesNo;
+            }
+            if (features.iterator().next() == "genres") {
+                for(Movie m : movies) {
+                    if(m.getGenres() == movie.getGenres()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+                movies = moviesNo;
+            }
+            if (features.iterator().next() == "director") {
+                for(Movie m: movies) {
+                    if(m.getDirector_name() == movie.getDirector_name()) {
+                        moviesYes.add(m);
+                        features.remove(m);
+                        prediction = getMostFrequentPopularity(moviesYes);
+                    } else {
+                        moviesNo.add(m);
+                    }
+                }
+            }
+        }
+        return prediction;
+    }
+
+    public String getMostFrequentPopularity(List<Movie> moviesList) {
+        int low  = 0;
+        int high = 0;
+        int medium = 0;
+        Map<Integer,String> popularityFrequencies = new HashMap<>();
+        for(Movie m: moviesList) {
+            if(m.getPopularity() == "Low") low++;
+            if(m.getPopularity() == "High") high++;
+            if(m.getPopularity() == "Medium") medium++;
+        }
+        popularityFrequencies.put(low,"Low");
+        popularityFrequencies.put(high,"High");
+        popularityFrequencies.put(medium,"Medium");
+        int maxLowMediumHigh = Math.max(Math.max(low,high),medium);
+        return popularityFrequencies.get(maxLowMediumHigh);
+    }
+
     //Entropia generala, adica verificam in datele noastra cate date sunt high,medium sau low si calculam entropia
     //Facuta pentru caz general (cum se calculează)
     public double general_entropy(List<Movie> movies)
@@ -193,6 +572,7 @@ public class DecisionTree {
     {
         return (Math.log(n)/Math.log(2));
     }
+
     //calcul entropie folosit in entropiile specifice ale atributelor
     public double calculate_atribute_entropy(List<Movie> movies_not,int movies_size)
     {
@@ -200,39 +580,41 @@ public class DecisionTree {
         return entropy;
     }
     //calculul celei mai bune atribute (folosind entropiile)
-    public String best_infoGain_atribute(List<Movie> movies,Movie movie,String[] atributes)
+    public TreeMap<Double,String> infoGain_atribute_list(List<Movie> movies, Movie movie, List<String> atributes)
     {
         TreeMap<Double,String> list= new TreeMap<>(Collections.reverseOrder());
-        for (int i=0;i<atributes.length;i++)
+        for (int i=0;i<atributes.size();i++)
         {
-            if (atributes[i].equals("actors"))
+            if (atributes.get(i).equals("actors"))
             {
                 double info_gain = general_entropy(movies)-specific_actor_entropy(movies,movie.getActors());
-                list.put(info_gain,atributes[i]);
+                list.put(info_gain,atributes.get(i));
             }
-            if (atributes[i].equals("budget"))
+            if (atributes.get(i).equals("budget"))
             {
                 double info_gain = general_entropy(movies)-specific_budget_entropy(movies,movie.getBudget());
-                list.put(info_gain,atributes[i]);
+                list.put(info_gain,atributes.get(i));
             }
-            if (atributes[i].equals("director"))
+            if (atributes.get(i).equals("director"))
             {
                 double info_gain = general_entropy(movies)-specific_director_entropy(movies,movie.getDirector_name());
-                list.put(info_gain,atributes[i]);
+                list.put(info_gain,atributes.get(i));
             }
-            if (atributes[i].equals("genres"))
+            if (atributes.get(i).equals("genres"))
             {
                 double info_gain = general_entropy(movies)-specific_genre_entropy(movies,movie.getGenres());
-                list.put(info_gain,atributes[i]);
+                list.put(info_gain,atributes.get(i));
             }
-            if (atributes[i].equals("producers"))
+            if (atributes.get(i).equals("producers"))
             {
                 double info_gain = general_entropy(movies)-specific_producer_entropy(movies,movie.getProducers());
-                list.put(info_gain,atributes[i]);
+                list.put(info_gain,atributes.get(i));
             }
-
         }
-        String Value = null;
+        return list;
+    }
+
+    public String best_infoGain_atribute(TreeMap<Double, String> list) {
         Map.Entry<Double, String> entry = list.firstEntry();
         return entry.getValue();
     }
