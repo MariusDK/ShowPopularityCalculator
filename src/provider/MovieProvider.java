@@ -51,7 +51,9 @@ public class MovieProvider {
 
         List<Actor> actors = new ArrayList<>();
         try{
-            String querry = "SELECT  actor_id, actor_name, nationality, birth FROM actors INNER JOIN movies_actors on actors.actor_id = movies_actors.actor_id WHERE movies_actors.movie_id ='"+movie_id+"'";
+            String querry = "SELECT  actor_id, actor_name, nationality, birth_date " +
+                            "FROM actors INNER JOIN movies_actors on actors.actor_id = movies_actors.actor_id " +
+                            "WHERE movies_actors.movie_id ='"+movie_id+"'";
             ResultSet resultSet = DatabaseConnection.getStatement().executeQuery(querry);
             while(resultSet.next())
             {

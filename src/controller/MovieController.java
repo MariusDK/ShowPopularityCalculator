@@ -11,6 +11,7 @@ public class MovieController {
     //aici se face scheletul algoritmului
     //nr_tree = reprezinta numarul copacilor
     //aici formam cele nr_tree submultimi pe care apoi le trimitem pe rand construiri arborelui
+
     private List<String> RandomTree_Algoritm(Movie movie)
     {
         List<Movie> movies = provider.getMovies(); ///test
@@ -19,7 +20,6 @@ public class MovieController {
         int subset_size = movies.size()/nr_tree;
         int last = subset_size;
         for (int i=0;i<nr_tree;i++) {
-
 
             List<String> attributes = getRandomAtributes();
             if (i == nr_tree - 1) {
@@ -31,7 +31,7 @@ public class MovieController {
                 last = last + subset_size;
             }
         }
-
+        return null;
     }
     //aici primim lista de atribute random
     private List<String> getRandomAtributes()
@@ -54,6 +54,7 @@ public class MovieController {
         }
         return attributesChosen;
     }
+
     //prin aceasta functie primim pe rand submultimile
     public List<Movie> getSubSet(int first,int last,List<Movie> movies)
     {
@@ -64,8 +65,5 @@ public class MovieController {
         }
         return subSet_movies;
     }
-
-
-
 
 }

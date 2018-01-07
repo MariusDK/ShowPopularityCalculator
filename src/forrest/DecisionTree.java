@@ -9,26 +9,22 @@ import domain.Producer;
 import java.util.*;
 
 public class DecisionTree {
-    private Nod radacina;
 
+    private Nod radacina;
 
     public DecisionTree(Nod radacina) {
         this.radacina = radacina;
     }
 
-    public DecisionTree() {
-    }
+    public DecisionTree() { }
 
-    private  void next()
-    {
-
-    }
     private String createTree(List<Movie> movies,Movie movie,String[] atributes)
     {
+        double targetEntropy = general_entropy(movies);
         String bestAtribute = best_infoGain_atribute(movies,movie,atributes);
         radacina.setValue(bestAtribute);
 
-
+        return null;
 
     }
     //Entropia generala, adica verificam in datele noastra cate date sunt high,medium sau low si calculam entropia
@@ -157,6 +153,7 @@ public class DecisionTree {
         }
         return calculate_atribute_entropy(newMovieList_no,movies.size());
     }
+
     //entropia pentru categoria buget
     public double specific_budget_entropy(List<Movie> movies,int budget)
     {
@@ -171,12 +168,12 @@ public class DecisionTree {
         if ((budget>50000)&&(budget<=750000))
         {
             minBuget = 500000;
-            maxBuget = 750000;///categoria LOW MEDIUM
+            maxBuget = 750000;///categoria MEDIUM
         }
         if ((budget>750000)&&(budget<=1000000))
         {
             minBuget = 750000;
-            maxBuget = 1000000;///categoria LOW HIGH
+            maxBuget = 1000000;///categoria HIGH
         }
         for (Movie movie:movies)
         {
