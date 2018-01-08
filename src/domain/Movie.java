@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Movie {
     private int movie_id;
+
     private String director_name;
     private List<Genre> genres;
     private List<domain.Producer> producers;

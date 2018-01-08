@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="605.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MovieUI">
+   <children>
+      <Button layoutX="282.0" layoutY="431.0" mnemonicParsing="false" text="Predict" />
+      <TextField id="movie_text" fx:id="movie_text" layoutX="221.0" layoutY="32.0" />
+      <Label id="movie_name" fx:id="movie_name" layoutX="120.0" layoutY="37.0" text="Movie Name" />
+      <Label id="director_name" fx:id="director_name" layoutX="132.0" layoutY="74.0" text="Director" />
+      <Label id="genres" fx:id="genres" layoutX="139.0" layoutY="110.0" text="Genres" />
+      <TextField id="director_text" fx:id="director_text" layoutX="221.0" layoutY="69.0" />
+      <TextField id="genres_text" fx:id="genres_text" layoutX="221.0" layoutY="105.0" />
+      <TextField id="producers_text" fx:id="producers_text" layoutX="221.0" layoutY="148.0" />
+      <TextField id="actors_text" fx:id="actors_text" layoutX="221.0" layoutY="185.0" />
+      <TextField id="release_text" fx:id="release_text" layoutX="221.0" layoutY="223.0" />
+      <TextField id="rating_text" fx:id="rating_text" layoutX="221.0" layoutY="263.0" />
+      <TextField id="budget_text" fx:id="budget_text" layoutX="221.0" layoutY="303.0" />
+      <Label fx:id="producers" layoutX="129.0" layoutY="153.0" text="Producers" />
+      <Label fx:id="actors" layoutX="142.0" layoutY="190.0" text="Actors" />
+      <Label fx:id="release_year" layoutX="120.0" layoutY="228.0" text="Release Year" />
+      <Label fx:id="rating" layoutX="141.0" layoutY="268.0" text="Rating" />
+      <Label fx:id="budget" layoutX="139.0" layoutY="308.0" text="Budget" />
+      <Label id="popularity" fx:id="popularity" layoutX="297.0" layoutY="509.0" text="Result" />
+   </children>
+</AnchorPane>
