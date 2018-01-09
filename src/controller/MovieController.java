@@ -10,7 +10,10 @@ public class MovieController {
 
     private MovieProvider provider;
 
-    public MovieController() { }
+    public MovieController()
+    {
+        provider = new MovieProvider();
+    }
 
     //aici se face scheletul algoritmului
     //nr_tree = reprezinta numarul copacilor
@@ -37,10 +40,9 @@ public class MovieController {
     public List<String> RandomTree_Algoritm(Movie movie)
     {
 
-        List<Movie> movies = null;
-        System.out.println(provider.getMovies()); ///test
+        List<Movie> movies = provider.getMovies(); ///test
         List<String> predictionList = new ArrayList<>();
-        int nr_tree=100;
+        int nr_tree=3;
         int first = 0;
         int subset_size = movies.size()/nr_tree;
         int last = subset_size;

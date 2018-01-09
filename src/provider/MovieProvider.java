@@ -18,10 +18,37 @@ public class MovieProvider {
 
     public List<Movie> getMovies()
     {
+
         List<Movie> movies = new ArrayList<>();
         try {
-            String querry = "SELECT movie_id,director_name,title,release_year,rating,budget,popularity FROM movies INNER JOIN  directors on movies.director_id = directors.director_id ";
+//            String querry = "SELECT DISTINCT m.movie_id,\n" +
+//                    "       d.director_name,\n" +
+//                    "       m.title,\n" +
+//                    "       g.genre_name,\n" +
+//                    "       m.budget,\n" +
+//                    "       m.popularity,\n" +
+//                    "       m.rating,\n" +
+//                    "       m.release_year,\n" +
+//                    "       p.producer_name\n" +
+//                    "       a.actor_name\n" +
+//                    "FROM movies m\n" +
+//                    "INNER JOIN directors d\n" +
+//                    "ON m.director_id = d.director_id\n" +
+//                    "INNER JOIN movies_actors ma\n" +
+//                    "ON ma.movie_id = m.movie_id\n" +
+//                    "INNER JOIN actors a\n" +
+//                    "ON a.actor_id = ma.actor_id\n" +
+//                    "INNER JOIN movies_genres mg\n" +
+//                    "ON mg.movie_id = m.movie_id\n" +
+//                    "INNER JOIN genres g\n" +
+//                    "ON mg.genre_id = g.genre_id\n" +
+//                    "INNER JOIN movies_producers mp\n" +
+//                    "ON mp.movie_id = m.movie_id\n" +
+//                    "INNER JOIN producers p\n" +
+//                    "ON mp.producer_id = p.producer_id";
+            String querry = "SELECT m.movie_id,d.director_name,m.title,m.release_year,m.rating,m.budget,m.popularity FROM movies m INNER JOIN  directors d ON m.director_id = d.director_id;";
             ResultSet resultSet = DatabaseConnection.getStatement().executeQuery(querry);
+
             while (resultSet.next())
             {
                 int movie_id = resultSet.getInt("movie_id");
@@ -33,7 +60,7 @@ public class MovieProvider {
                 String release_year = resultSet.getString("release_year");
                 List<Actor> actors = getActorsForMovie(movie_id);
                 List<Genre> genres = getGenresForMovie(movie_id);
-                List<Producer> producers = getProducersForMivie(movie_id);
+                List<Producer> producers = getProducersForMovie(movie_id);
 
                 Movie m =new Movie(movie_id,director_name,genres,producers,actors,title,release_year,rating,budget,popularity);
                 movies.add(m);
@@ -51,16 +78,16 @@ public class MovieProvider {
 
         List<Actor> actors = new ArrayList<>();
         try{
-            String querry = "SELECT  actor_id, actor_name, nationality, birth_date " +
-                            "FROM actors INNER JOIN movies_actors on actors.actor_id = movies_actors.actor_id " +
-                            "WHERE movies_actors.movie_id ='"+movie_id+"'";
+            String querry = "SELECT  a.actor_id, a.actor_name, a.nationality, a.birth_date " +
+                            "FROM actors a INNER JOIN movies_actors ma on a.actor_id = ma.actor_id " +
+                            "WHERE ma.movie_id ='"+movie_id+"'";
             ResultSet resultSet = DatabaseConnection.getStatement().executeQuery(querry);
             while(resultSet.next())
             {
                 int actor_id = resultSet.getInt("actor_id");
                 String actor_name = resultSet.getString("actor_name");
                 String nationality = resultSet.getString("nationality");
-                String birth = resultSet.getString("birth");
+                String birth = resultSet.getString("birth_date");
                 Actor actor =new Actor();
                 actor.setActorID(actor_id);
                 actor.setActor_name(actor_name);
@@ -80,7 +107,7 @@ public class MovieProvider {
     {
         List<Genre> genres = new ArrayList<>();
         try{
-            String querry = "SELECT  genre_id, genre_name FROM genres INNER JOIN movies_genres on genres.genre_id = movies_genres.genre_id WHERE movies_genres.movie_id ='"+movie_id+"'";
+            String querry = "SELECT  g.genre_id, g.genre_name FROM genres g INNER JOIN movies_genres mg on g.genre_id = mg.genre_id WHERE mg.movie_id ='"+movie_id+"'";
             ResultSet resultSet = DatabaseConnection.getStatement().executeQuery(querry);
             while(resultSet.next())
             {
@@ -99,12 +126,12 @@ public class MovieProvider {
         }
         return genres;
     }
-    public List<Producer> getProducersForMivie(int movie_id)
+    public List<Producer> getProducersForMovie(int movie_id)
     {
 
         List<Producer> producers = new ArrayList<>();
         try{
-            String querry = "SELECT  producer_id, producer_name, nationality, birth_date FROM producers INNER JOIN movies_producers on producers.producer_id = movies_producers.producers_id WHERE movies_producers.movie_id ='"+movie_id+"'";
+            String querry = "SELECT  p.producer_id, p.producer_name, p.nationality, p.birth_date FROM producers p INNER JOIN movies_producers mp on p.producer_id = mp.producer_id WHERE mp.movie_id ='"+movie_id+"'";
             ResultSet resultSet = DatabaseConnection.getStatement().executeQuery(querry);
             while(resultSet.next())
             {
@@ -127,7 +154,5 @@ public class MovieProvider {
             e.printStackTrace();
         }
         return producers;
-
-
     }
 }

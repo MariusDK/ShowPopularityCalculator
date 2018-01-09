@@ -32,6 +32,7 @@ public class DecisionTree {
         for (int i = 1 ; i < restOfAttributes.size() - 1; i++){
             features.add(restOfAttributes.get(i));
         }
+        radacina = new Nod();
         radacina.setValue(bestAtribute);
         if (bestAtribute.equals("actors"))
             prediction = getPredictionForRootActor(movies, movie, moviesYes, moviesNo, features);
@@ -68,7 +69,7 @@ public class DecisionTree {
                 for(Movie m : movies) {
                     if(m.getActors() == movie.getActors()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -80,7 +81,7 @@ public class DecisionTree {
                 for(Movie m : movies) {
                     if(m.getBudgetCategory() == movie.getBudgetCategory()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -92,7 +93,7 @@ public class DecisionTree {
                 for(Movie m : movies) {
                     if(m.getProducers() == movie.getProducers()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -104,7 +105,7 @@ public class DecisionTree {
                 for(Movie m: movies) {
                     if(m.getGenres() == movie.getGenres()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -138,7 +139,7 @@ public class DecisionTree {
                 for(Movie m : movies) {
                     if(m.getActors() == movie.getActors()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -150,7 +151,7 @@ public class DecisionTree {
                 for(Movie m : movies) {
                     if(m.getBudgetCategory() == movie.getBudgetCategory()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -162,7 +163,7 @@ public class DecisionTree {
                 for(Movie m : movies) {
                     if(m.getProducers() == movie.getProducers()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -174,7 +175,7 @@ public class DecisionTree {
                 for(Movie m: movies) {
                     if(m.getDirector_name() == movie.getDirector_name()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -206,7 +207,7 @@ public class DecisionTree {
                 for(Movie m : movies) {
                     if(m.getActors() == movie.getActors()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -218,7 +219,7 @@ public class DecisionTree {
                 for(Movie m : movies) {
                     if(m.getBudgetCategory() == movie.getBudgetCategory()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -230,7 +231,7 @@ public class DecisionTree {
                 for(Movie m : movies) {
                     if(m.getGenres() == movie.getGenres()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -242,7 +243,7 @@ public class DecisionTree {
                 for(Movie m: movies) {
                     if(m.getDirector_name() == movie.getDirector_name()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -274,7 +275,7 @@ public class DecisionTree {
                 for(Movie m : movies) {
                     if(m.getActors() == movie.getActors()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -286,7 +287,7 @@ public class DecisionTree {
                 for(Movie m : movies) {
                     if(m.getProducers() == movie.getProducers()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -298,7 +299,7 @@ public class DecisionTree {
                 for(Movie m : movies) {
                     if(m.getGenres() == movie.getGenres()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -310,7 +311,7 @@ public class DecisionTree {
                 for(Movie m: movies) {
                     if(m.getDirector_name() == movie.getDirector_name()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -342,7 +343,7 @@ public class DecisionTree {
                 for(Movie m : movies) {
                     if(m.getBudgetCategory() == movie.getBudgetCategory()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -354,7 +355,7 @@ public class DecisionTree {
                 for(Movie m : movies) {
                     if(m.getProducers() == movie.getProducers()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -366,7 +367,7 @@ public class DecisionTree {
                 for(Movie m : movies) {
                     if(m.getGenres() == movie.getGenres()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);
@@ -378,7 +379,7 @@ public class DecisionTree {
                 for(Movie m: movies) {
                     if(m.getDirector_name() == movie.getDirector_name()) {
                         moviesYes.add(m);
-                        features.remove(m);
+                        features.iterator().remove();
                         prediction = getMostFrequentPopularity(moviesYes);
                     } else {
                         moviesNo.add(m);

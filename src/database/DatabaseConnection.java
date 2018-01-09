@@ -21,7 +21,6 @@ public class DatabaseConnection {
     }
 
     public static Statement getStatement(){
-        System.out.println(2);
         if (instance == null){
             instance = new DatabaseConnection();
         }

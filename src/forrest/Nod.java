@@ -7,6 +7,8 @@ public class Nod {
     private Nod right;
     private Nod left;
 
+    public Nod() {}
+
     public Nod(String value, Nod right, Nod left) {
         this.value = value;
         this.right = right;
