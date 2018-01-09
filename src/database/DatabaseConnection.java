@@ -11,6 +11,7 @@ public class DatabaseConnection {
 
     private DatabaseConnection() {
         try {
+            Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/movies_datamining", "root", "");
         }
         catch (Exception e) {
@@ -20,6 +21,7 @@ public class DatabaseConnection {
     }
 
     public static Statement getStatement(){
+        System.out.println(2);
         if (instance == null){
             instance = new DatabaseConnection();
         }

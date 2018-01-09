@@ -49,10 +49,12 @@ public class MovieUI implements Initializable{
     }
 
     @Override
-    public void initialize(URL fxmlFileLocation, ResourceBundle resources) {}
+    public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
+        initData();
+    }
 
-    public void initData(String name,MovieController controller) {
-        this.controller=controller;
+    public void initData() {
+
             predict.setOnAction(event -> predictPopularity());
 
     }
@@ -84,7 +86,7 @@ public class MovieUI implements Initializable{
             genresList.add(genre1);
         }
         movie.setGenres(genresList);
-        Float ratingVal = Float.parseFloat(release_text.getText());
+        Float ratingVal = Float.parseFloat(rating_text.getText());
         movie.setRating(ratingVal);
 
         movie.setRelease_year(release_text.getText());

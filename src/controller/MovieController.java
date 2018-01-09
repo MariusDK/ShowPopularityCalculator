@@ -36,7 +36,9 @@ public class MovieController {
 
     public List<String> RandomTree_Algoritm(Movie movie)
     {
-        List<Movie> movies = provider.getMovies(); ///test
+
+        List<Movie> movies = null;
+        System.out.println(provider.getMovies()); ///test
         List<String> predictionList = new ArrayList<>();
         int nr_tree=100;
         int first = 0;

@@ -7,7 +7,7 @@
 
 <AnchorPane prefHeight="605.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MovieUI">
    <children>
-      <Button layoutX="282.0" layoutY="431.0" mnemonicParsing="false" text="Predict" />
+      <Button id="predict" fx:id="predict" layoutX="282.0" layoutY="431.0" mnemonicParsing="false" text="Predict" />
       <TextField id="movie_text" fx:id="movie_text" layoutX="221.0" layoutY="32.0" />
       <Label id="movie_name" fx:id="movie_name" layoutX="120.0" layoutY="37.0" text="Movie Name" />
       <Label id="director_name" fx:id="director_name" layoutX="132.0" layoutY="74.0" text="Director" />
